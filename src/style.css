@@ -6,3 +6,17 @@ p {
 .d-flex {
   display: flex;
 }
+label {
+  font-weight: bold;
+}
+input,
+label {
+  margin-left: 4px;
+}
+h3 {
+  margin-bottom: 0;
+}
+td,
+th {
+  border: 1px solid #eee;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 const APIURL = ``;
-const defaultOptions = { ServiceTypes: [], CarCount: [] };
+const defaultOptions = { ServiceTypes: [], CarCount: [], LineCode: [] };
 
 export default function App() {
   const [railData, setRailData] = useState([]);
@@ -101,6 +101,9 @@ export default function App() {
       if (optionValues.CarCount.indexOf(i.CarCount) === -1) {
         optionValues.CarCount.push(i.CarCount);
       }
+      if (optionValues.LineCode.indexOf(i.LineCode) === -1) {
+        optionValues.LineCode.push(i.LineCode);
+      }
     });
     setOptionValues(optionValues);
   };
@@ -112,8 +115,17 @@ export default function App() {
     <div>
       <h3>Welcome to Rail</h3>
       <div className="d-flex" style={{ flexDirection: 'column' }}>
-        <div>Filters:</div>
-        <div className="d-flex">
+        <div
+          style={{
+            fontWeight: 'bold',
+            fontSize: 18,
+            textDecoration: 'underline',
+            marginBottom: '8px',
+          }}
+        >
+          Filters:
+        </div>
+        <div className="d-flex" style={{ flexFlow: 'wrap' }}>
           <input
             name="TrainNumber"
             id="TrainNumber"
@@ -133,7 +145,7 @@ export default function App() {
             </select>
           </div>
           <div>
-            <label>Colored Lines</label>
+            <label>Colored Lines: </label>
             <select name="LineCode" id="LineCode" onChange={handleChange}>
               <option value="">--Select--</option>
               <option value="RD">Red</option>
@@ -177,6 +189,42 @@ export default function App() {
           ))}
         </tbody>
       </table>
+
+      <hr />
+      <h2>Unique Colored Lines Trains</h2>
+      {optionValues.LineCode.map((color) => (
+        <div>
+          <span style={{ color: 'gray' }}>{color || 'Empty'}</span>
+          <table width="100%">
+            <thead>
+              <tr>
+                <th>Train Number</th>
+                <th>Car Count</th>
+                <th>Direction Number</th>
+                <th>CircuitId</th>
+                <th>Destination Station Code</th>
+                <th>Line Code</th>
+                <th>Service Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {railData.map((train) =>
+                train.LineCode === color ? (
+                  <tr>
+                    <td>{train.TrainNumber}</td>
+                    <td>{train.CarCount}</td>
+                    <td>{train.DirectionNum}</td>
+                    <td>{train.CircuitId}</td>
+                    <td>{train.DestinationStationCode}</td>
+                    <td>{train.LineCode}</td>
+                    <td>{train.ServiceType}</td>
+                  </tr>
+                ) : null
+              )}
+            </tbody>
+          </table>
+        </div>
+      ))}
     </div>
   );
 }
